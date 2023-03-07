@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 /* pages */
 import Home from '../pages/Home';
 import Welcome from '../pages/Welcome';
@@ -18,85 +18,40 @@ import { NoSidebarTemplate } from '../layouts/NoSidebarTemplate';
 import { SidebarTemplate } from '../layouts/SidebarTemplate';
 import { pages } from '../constants/pages';
 
-const router = createBrowserRouter([
-  {
-    element: <NoSidebarTemplate />,
-    children: [
-      {
-        path: '/',
-        element: <Home />,
-      },
-      {
-        path: pages.access.route,
-        element: <SidebarTemplate />,
-        children: [
-          {
-            index: true,
-            element: <Access />,
-          },
-          {
-            path: pages.access.manageServiceAccounts.route,
-            children: [
-              {
-                index: true,
-                element: <ManageServiceAccounts />,
-              },
-              {
-                path: pages.access.manageServiceAccounts.createService.route,
-                element: <CreateService />,
-              },
-            ],
-          },
-          {
-            path: pages.access.manageUsers.route,
-            children: [
-              {
-                index: true,
-                element: <ManageUsers />,
-              },
-              {
-                path: pages.access.manageUsers.createUser.route,
-                element: <CreateUser />,
-              },
-              {
-                path: ':id',
-                element: <EditUser />,
-              },
-            ],
-          },
-          {
-            path: pages.access.viewEnvironments.route,
-            children: [
-              {
-                index: true,
-                element: <ViewEnvironments />,
-              },
-              {
-                path: pages.access.viewEnvironments.development.route,
-                element: <Development />,
-              },
-              {
-                path: pages.access.viewEnvironments.production.route,
-                element: <Production />,
-              },
-              {
-                path: pages.access.viewEnvironments.staging.route,
-                element: <Staging />,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        path: pages.welcome.title,
-        element: <Welcome />,
-      },
-    ],
-  },
-  {
-    path: 'public',
-    element: <div>About</div>,
-  },
-]);
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route>
+      <Route path="/" element={<NoSidebarTemplate />}>
+        <Route path="/" element={<Home />} />
+        <Route path={pages.access.route} element={<SidebarTemplate />}>
+          <Route index element={<Access />} />
+          <Route path={pages.access.manageServiceAccounts.route}>
+            <Route index element={<ManageServiceAccounts />} />
+            <Route
+              path={pages.access.manageServiceAccounts.createService.route}
+              element={<CreateService />}
+            />
+          </Route>
+          <Route path={pages.access.manageUsers.route}>
+            <Route index element={<ManageUsers />} />
+            <Route path={pages.access.manageUsers.createUser.route} element={<CreateUser />} />
+            <Route path=":id" element={<EditUser />} />
+          </Route>
+          <Route path={pages.access.viewEnvironments.route}>
+            <Route index element={<ViewEnvironments />} />
+            <Route
+              path={pages.access.viewEnvironments.development.route}
+              element={<Development />}
+            />
+            <Route path={pages.access.viewEnvironments.production.route} element={<Production />} />
+            <Route path={pages.access.viewEnvironments.staging.route} element={<Staging />} />
+          </Route>
+        </Route>
+        <Route path={pages.welcome.title} element={<Welcome />} />
+      </Route>
+      <Route path="public" element={<div>About</div>} />
+    </Route>
+  )
+);
 
 export default router;
